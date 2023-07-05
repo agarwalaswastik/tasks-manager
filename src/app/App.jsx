@@ -1,6 +1,11 @@
+import { Provider } from "react-redux";
+import { store } from "./store";
+
 const App = () => {
     return (
-        <div className="bg-red-500">Hi</div>
+        <Provider store={store}>
+            <></>
+        </Provider>
     );
 };
 
