@@ -1,15 +1,14 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { generateUniqueId } from "../../utils/idUtils";
+import { generateNextColor } from "../../utils/colorUtils";
 
 export const filtersSlice = createSlice({
     name: "filters",
     initialState: [],
     reducers: {
         addFilter: {
-            prepare: (desc, color) => ({
-                id: generateUniqueId(),
-                desc,
-                color,
+            prepare: (desc) => ({
+                payload: { id: generateUniqueId(), desc, color: generateNextColor() },
             }),
             reducer: (state, action) => {
                 state.unshift(action.payload);
