@@ -2,12 +2,18 @@ import PropTypes from "prop-types";
 import CrossableFilter from "./CrossableFilter";
 import Filter from "./Filter";
 
-const FilterList = ({ filterIds, onCross, className, children }) => {
+const FilterList = ({ filterIds, onCross, className, children, filtersClassName }) => {
     const getFilterComponent = (filterId) => {
         if (onCross) {
-            return <CrossableFilter filterId={filterId} onCross={() => onCross(filterId)} />;
+            return (
+                <CrossableFilter
+                    filterId={filterId}
+                    onCross={() => onCross(filterId)}
+                    className={filtersClassName}
+                />
+            );
         } else {
-            return <Filter filterId={filterId} />;
+            return <Filter filterId={filterId} className={filtersClassName} />;
         }
     };
 
@@ -26,6 +32,7 @@ FilterList.propTypes = {
     onCross: PropTypes.func,
     className: PropTypes.string,
     children: PropTypes.node,
+    filtersClassName: PropTypes.string,
 };
 
 export default FilterList;

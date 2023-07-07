@@ -8,7 +8,7 @@ const Filter = ({ filterId, className, children }) => {
 
     return (
         <span
-            className={`relative inline-block cursor-pointer select-none rounded-xl px-2 py-0.5 text-sm ${className}`}
+            className={`relative inline-block cursor-pointer select-none overflow-hidden text-ellipsis whitespace-nowrap rounded-xl px-2 py-0.5 text-sm ${className}`}
             style={{
                 backgroundColor: filter.color,
                 color: generateFontColor(filter.color),
