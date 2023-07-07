@@ -6,16 +6,17 @@ import { useState } from "react";
 
 const SearchBar = () => {
     const searchFilterIds = useSelector((state) => state.search.searchFilterIds);
+    const searchQuery = useSelector((state) => state.search.searchQuery);
     const dispatch = useDispatch();
 
-    const [searchText, setSearchText] = useState("");
+    const [searchTextFieldValue, setSearchTextFieldValue] = useState(searchQuery);
 
     const handleSearchTextValueChange = (e) => {
-        setSearchText(e.target.value);
+        setSearchTextFieldValue(e.target.value);
     };
 
     const handleApplySearchQuery = () => {
-        dispatch(applySearchQuery(searchText));
+        dispatch(applySearchQuery(searchTextFieldValue));
     };
 
     return (
@@ -33,7 +34,8 @@ const SearchBar = () => {
                 type="text"
                 placeholder="Description..."
                 className="h-12 w-[30%] border border-black px-1 focus:outline-none"
-                value={searchText}
+                value={searchTextFieldValue}
+                onBlur={() => setSearchTextFieldValue(searchQuery)}
                 onChange={handleSearchTextValueChange}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {

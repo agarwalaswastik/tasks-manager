@@ -37,8 +37,8 @@ export const tasksSlice = createSlice({
             },
         },
         addTask: {
-            prepare: (taskListId, id, desc, color) => ({
-                payload: { taskListId, id, desc, color },
+            prepare: (taskListId, id, desc, color, filters) => ({
+                payload: { taskListId, id, desc, color, filters },
             }),
             reducer: (state, action) => {
                 for (let taskList of state) {
@@ -47,7 +47,7 @@ export const tasksSlice = createSlice({
                             id: action.payload.id,
                             desc: action.payload.desc,
                             color: action.payload.color,
-                            filters: [],
+                            filters: action.payload.filters ?? [],
                         });
                     }
                 }
@@ -117,8 +117,8 @@ const getTask = (state, taskId) => {
 export const addTaskList = (desc) =>
     tasksSlice.actions.addTaskList(generateUniqueId(), desc, generateNextColor());
 
-export const addTask = (taskListId, desc) =>
-    tasksSlice.actions.addTask(taskListId, generateUniqueId(), desc, generateNextColor());
+export const addTask = (taskListId, desc, filters) =>
+    tasksSlice.actions.addTask(taskListId, generateUniqueId(), desc, generateNextColor(), filters);
 
 export const {
     deleteTaskList,

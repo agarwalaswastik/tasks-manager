@@ -6,12 +6,27 @@ import { useDispatch } from "react-redux";
 import { addTask, deleteTaskList, editTaskListDesc } from "./tasksSlice";
 import { generateFontColor } from "../../utils/colorUtils";
 import Task from "./Task";
+import { useSelector } from "react-redux";
 
 const TaskList = ({ taskList, index }) => {
+    const searchFilterIds = useSelector(state => state.search.searchFilterIds);
+    const searchQuery = useSelector(state => state.search.searchQuery);
     const dispatch = useDispatch();
 
+    const searchedTasks = taskList.tasks.filter((task) => {
+        if (!task.desc.includes(searchQuery)) {
+            return false;
+        }
+        for (let searchFilterId of searchFilterIds) {
+            if (task.filters.indexOf(searchFilterId) === -1) {
+                return false;
+            }
+        }
+        return true;
+    });
+
     const handleAddTask = () => {
-        dispatch(addTask(taskList.id, "New Task"));
+        dispatch(addTask(taskList.id, searchQuery.length ? searchQuery : "New Task", searchFilterIds));
     };
 
     const handleDeleteTaskList = () => {
@@ -62,7 +77,7 @@ const TaskList = ({ taskList, index }) => {
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-                                {taskList.tasks.map((task, index) => (
+                                {searchedTasks.map((task, index) => (
                                     <Task key={task.id} task={task} index={index} />
                                 ))}
                                 {provided.placeholder}
