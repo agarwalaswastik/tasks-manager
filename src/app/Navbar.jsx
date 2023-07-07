@@ -7,7 +7,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
 
     return (
-        <nav className="fixed flex w-full items-center border-b border-black bg-white p-4 pr-24">
+        <nav className="fixed flex w-full items-center border-b-4 border-black shadow-lg bg-white p-4 pr-24">
             <SearchBar />
             <CrossButton
                 plus={true}

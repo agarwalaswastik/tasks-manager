@@ -20,7 +20,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div className="flex h-12 w-full items-center rounded-xl border border-black bg-white pl-1">
+        <div className="flex h-12 w-full items-center rounded-xl border-4 border-black bg-white pl-1">
             <FilterListEditor
                 filterIds={searchFilterIds}
                 onCross={(filterId) => dispatch(removeSearchFilter(filterId))}
@@ -33,7 +33,7 @@ const SearchBar = () => {
                 name="searchTextField"
                 type="text"
                 placeholder="Description..."
-                className="h-12 w-[30%] border border-black px-1 focus:outline-none"
+                className="h-12 w-[30%] border-4 border-black px-1 focus:outline-none"
                 value={searchTextFieldValue}
                 onBlur={() => setSearchTextFieldValue(searchQuery)}
                 onChange={handleSearchTextValueChange}
@@ -45,7 +45,7 @@ const SearchBar = () => {
             />
             <button
                 onClick={handleApplySearchQuery}
-                className="relative h-full w-[5%] rounded-e-xl bg-gray-300 hover:bg-gray-400"
+                className="relative h-full w-[5%] bg-black text-white hover:bg-slate-600"
             >
                 <FiSearch className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
             </button>
