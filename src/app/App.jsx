@@ -7,7 +7,7 @@ const App = () => {
     return (
         <Provider store={store}>
             <Navbar />
-            <main className="fixed bottom-0 left-0 right-0 top-24 overflow-auto p-2 -z-10">
+            <main className="absolute bottom-0 left-0 right-0 top-24 p-2 -z-10">
                 <TaskBoard />
             </main>
         </Provider>

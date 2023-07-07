@@ -71,7 +71,7 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, className, filtersC
                         name="searchFilterField"
                         type="text"
                         placeholder="Filters..."
-                        className="pl-1 focus:outline-none"
+                        className="bg-transparent pl-1 focus:outline-none"
                         ref={searchFilterFieldRef}
                         value={searchFilterFieldValue}
                         onBlur={() => setShowDropDown(false)}

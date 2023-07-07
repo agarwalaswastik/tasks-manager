@@ -1,12 +1,19 @@
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import TaskList from "./TaskList";
+import { useDispatch } from "react-redux";
+import { dragEndUpdate } from "./tasksSlice";
 
 const TaskBoard = () => {
     const taskBoard = useSelector((state) => state.tasks);
+    const dispatch = useDispatch();
+
+    const handleDragEnd = (result) => {
+        dispatch(dragEndUpdate(result));
+    };
 
     return (
-        <DragDropContext>
+        <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type="taskList">
                 {(provided) => (
                     <article

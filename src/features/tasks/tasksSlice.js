@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { generateUniqueId } from "../../utils/idUtils";
 import { generateNextColor } from "../../utils/colorUtils";
+import { handleDragEnd } from "./handleDragEnd";
 
 export const tasksSlice = createSlice({
     name: "tasks",
@@ -96,6 +97,9 @@ export const tasksSlice = createSlice({
                 }
             },
         },
+        dragEndUpdate: (state, action) => {
+            handleDragEnd(state, action);
+        },
     },
 });
 
@@ -123,5 +127,6 @@ export const {
     editTaskDesc,
     addFilterToTask,
     removeFilterFromTask,
+    dragEndUpdate,
 } = tasksSlice.actions;
 export default tasksSlice.reducer;
