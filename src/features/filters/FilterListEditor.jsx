@@ -5,8 +5,6 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addFilter } from "./filtersSlice";
 import Filter from "./Filter";
-import { generateNextColor } from "../../utils/colorUtils";
-import { generateUniqueId } from "../../utils/idUtils";
 
 const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, className, filtersClassName }) => {
     const allFilters = useSelector((state) => state.filters);
@@ -31,11 +29,10 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, className, filtersC
     };
 
     const createFilterAndAddToList = () => {
-        const newFilterId = generateUniqueId();
-        const newFilterColor = generateNextColor();
-        dispatch(addFilter(newFilterId, searchFilterFieldValue, newFilterColor));
+        const action = addFilter(searchFilterFieldValue);
+        dispatch(action);
         setSearchFilterFieldValue("");
-        onAdd(newFilterId);
+        onAdd(action.payload.id);
     };
 
     const handleKeyDown = (e) => {

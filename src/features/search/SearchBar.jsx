@@ -32,7 +32,7 @@ const SearchBar = () => {
                 name="searchTextField"
                 type="text"
                 placeholder="Description..."
-                className="ml-2 h-12 w-[20%] border border-black pl-1 focus:outline-none"
+                className="ml-2 h-12 w-[20%] border border-black px-1 focus:outline-none"
                 value={searchText}
                 onChange={handleSearchTextValueChange}
                 onKeyDown={(e) => {

@@ -1,4 +1,6 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { generateUniqueId } from "../../utils/idUtils";
+import { generateNextColor } from "../../utils/colorUtils";
 
 export const filtersSlice = createSlice({
     name: "filters",
@@ -29,5 +31,8 @@ export const filterSelector = createSelector(
     (filters, filterId) => filters.find((filter) => filter.id === filterId)
 );
 
-export const { addFilter, deleteFilter } = filtersSlice.actions;
+export const addFilter = (desc) =>
+    filtersSlice.actions.addFilter(generateUniqueId(), desc, generateNextColor());
+
+export const { deleteFilter } = filtersSlice.actions;
 export default filtersSlice.reducer;
