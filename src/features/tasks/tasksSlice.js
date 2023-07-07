@@ -90,7 +90,7 @@ export const tasksSlice = createSlice({
                 const task = getTask(state, action.payload.taskId);
                 if (!task) return;
                 for (let i = 0; i < task.filters.length; i++) {
-                    if (task.filters[i].id === action.payload.filterId) {
+                    if (task.filters[i] === action.payload.filterId) {
                         task.filters.splice(i, 1);
                     }
                 }

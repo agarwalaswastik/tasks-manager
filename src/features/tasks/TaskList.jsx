@@ -3,11 +3,20 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import CrossButton from "../../components/CrossButton";
 import EditableText from "../../components/EditableText";
 import { useDispatch } from "react-redux";
-import { editTaskListDesc } from "./tasksSlice";
+import { addTask, deleteTaskList, editTaskListDesc } from "./tasksSlice";
 import { generateFontColor } from "../../utils/colorUtils";
+import Task from "./Task";
 
 const TaskList = ({ taskList, index }) => {
     const dispatch = useDispatch();
+
+    const handleAddTask = () => {
+        dispatch(addTask(taskList.id, "New Task"));
+    };
+
+    const handleDeleteTaskList = () => {
+        dispatch(deleteTaskList(taskList.id));
+    };
 
     return (
         <Draggable draggableId={`${taskList.id}-drag`} index={index}>
@@ -35,7 +44,7 @@ const TaskList = ({ taskList, index }) => {
                             renderText={(text) => text}
                             className="h-16 w-[85%] overflow-auto break-words text-xl font-semibold"
                         />
-                        <CrossButton size={40} />
+                        <CrossButton size={40} onClick={handleDeleteTaskList} />
                     </div>
                     <div className="w-fill relative h-16">
                         <CrossButton
@@ -43,16 +52,19 @@ const TaskList = ({ taskList, index }) => {
                             color="#00cc00"
                             size={40}
                             className="right-1/2 translate-x-1/2 bg-yellow-200"
+                            onClick={handleAddTask}
                         />
                     </div>
                     <Droppable droppableId={`${taskList.id}-drop`} type="task">
                         {(provided) => (
                             <div
-                                className="flex h-full w-full flex-col overflow-y-auto overflow-x-clip rounded-md px-2 pb-4"
+                                className="flex h-full w-full flex-col overflow-y-auto overflow-x-clip rounded-md px-2"
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-
+                                {taskList.tasks.map((task, index) => (
+                                    <Task key={task.id} task={task} index={index} />
+                                ))}
                                 {provided.placeholder}
                             </div>
                         )}

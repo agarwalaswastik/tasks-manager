@@ -27,7 +27,7 @@ const EditableText = ({ text, setText, renderText, className }) => {
             {isEditing && (
                 <input
                     type="text"
-                    className="relative z-30 w-80 border border-black pl-1 text-black"
+                    className="relative z-30 w-40 border border-black pl-1 text-black"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onBlur={() => {
