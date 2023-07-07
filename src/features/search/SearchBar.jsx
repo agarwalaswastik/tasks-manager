@@ -19,7 +19,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div className="flex h-12 w-full items-center rounded-xl border border-black pl-1">
+        <div className="flex h-12 w-full items-center rounded-xl border border-black bg-white pl-1">
             <FilterListEditor
                 filterIds={searchFilterIds}
                 onCross={(filterId) => dispatch(removeSearchFilter(filterId))}

@@ -36,7 +36,7 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, className, filtersC
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === " ") {
+        if (e.key === "Enter") {
             e.preventDefault();
             if (unaddedSearchedFilters.length) {
                 setSearchFilterFieldValue("");
@@ -47,7 +47,7 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, className, filtersC
             ) {
                 createFilterAndAddToList();
             }
-        } else if (e.key === "Enter") {
+        } else if (e.key === " ") {
             e.preventDefault();
             if (
                 searchFilterFieldValue.trim() &&
