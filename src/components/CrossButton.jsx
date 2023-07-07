@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
-import { BsPlusCircle } from "react-icons/bs";
+import { BsPlus } from "react-icons/bs";
 
-const CrossButton = ({ plus, size, onClick, color }) => {
+const CrossButton = ({ plus, size, onClick, color, className }) => {
     return (
         <button
             onClick={onClick}
             className={`absolute right-1 top-1/2 -translate-y-1/2 rounded-full text-center ${
                 plus ? "" : "rotate-45"
-            }`}
+            } ${className}`}
         >
-            <BsPlusCircle className="stroke-1"
+            <BsPlus
+                className="stroke-1"
                 style={{
                     fontSize: size,
                     color,
@@ -24,6 +25,7 @@ CrossButton.propTypes = {
     size: PropTypes.number,
     onClick: PropTypes.func,
     color: PropTypes.string,
+    className: PropTypes.string,
 };
 
 export default CrossButton;
