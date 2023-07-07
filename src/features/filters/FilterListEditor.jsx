@@ -1,18 +1,20 @@
 import PropTypes from "prop-types";
 import FilterList from "./FilterList";
 import SelectMenu from "../../components/SelectMenu";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addFilter } from "./filtersSlice";
 import Filter from "./Filter";
 import { generateNextColor } from "../../utils/colorUtils";
 import { generateUniqueId } from "../../utils/idUtils";
 
-const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, filtersClassName }) => {
+const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, className, filtersClassName }) => {
     const allFilters = useSelector((state) => state.filters);
     const dispatch = useDispatch();
 
+    const searchFilterFieldRef = useRef();
     const [searchFilterFieldValue, setSearchFilterFieldValue] = useState("");
+    const [showDropDown, setShowDropDown] = useState(false);
 
     const searchedFilters = allFilters.filter((filter) =>
         filter.desc.includes(searchFilterFieldValue.trim())
@@ -20,6 +22,7 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, filtersClassName })
     const unaddedSearchedFilters = searchedFilters.filter(
         (filter) => filterIds.indexOf(filter.id) === -1
     );
+    unaddedSearchedFilters.sort((a, b) => a.desc.localeCompare(b));
 
     const handleFieldValueChange = (e) => {
         if (e.target.value.length < 40) {
@@ -28,10 +31,11 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, filtersClassName })
     };
 
     const createFilterAndAddToList = () => {
-        const id = generateUniqueId();
-        dispatch(addFilter(id, searchFilterFieldValue.trim(), generateNextColor()));
+        const newFilterId = generateUniqueId();
+        const newFilterColor = generateNextColor();
+        dispatch(addFilter(newFilterId, searchFilterFieldValue, newFilterColor));
         setSearchFilterFieldValue("");
-        onAdd(id);
+        onAdd(newFilterId);
     };
 
     const handleKeyDown = (e) => {
@@ -40,15 +44,17 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, filtersClassName })
             if (unaddedSearchedFilters.length) {
                 setSearchFilterFieldValue("");
                 onAdd(unaddedSearchedFilters[0].id);
-            } else if (searchFilterFieldValue.trim()) {
+            } else if (
+                searchFilterFieldValue.trim() &&
+                !searchedFilters.find((filter) => filter.desc === searchFilterFieldValue)
+            ) {
                 createFilterAndAddToList();
             }
         } else if (e.key === "Enter") {
             e.preventDefault();
             if (
                 searchFilterFieldValue.trim() &&
-                (!unaddedSearchedFilters.length ||
-                    searchFilterFieldValue.trim() !== unaddedSearchedFilters[0].desc)
+                !searchedFilters.find((filter) => filter.desc === searchFilterFieldValue)
             ) {
                 createFilterAndAddToList();
             }
@@ -56,39 +62,40 @@ const FilterListEditor = ({ filterIds, onCross, wrap, onAdd, filtersClassName })
     };
 
     return (
-        <FilterList
-            filterIds={filterIds}
-            onCross={onCross}
-            className={`flex items-center gap-1 ${wrap ? "flex-wrap" : "w-fit"}`}
-            filtersClassName={filtersClassName}
-        >
-            <div className="relative">
-                <input
-                    name="searchFilterField"
-                    type="text"
-                    placeholder="Filters..."
-                    style={{
-                        width: `${10 + searchFilterFieldValue.length}ch`,
-                    }}
-                    className="peer pl-1 focus:outline-none"
-                    value={searchFilterFieldValue}
-                    onChange={handleFieldValueChange}
-                    onKeyDown={handleKeyDown}
-                />
-                <div className="absolute left-0 top-full hidden w-44 hover:block peer-focus:block z-50">
-                    <SelectMenu
-                        itemsData={unaddedSearchedFilters}
-                        renderItem={(itemData) => (
-                            <Filter
-                                filterId={itemData.id}
-                                className="absolute left-1/2 max-w-[90%] -translate-x-1/2 align-top"
-                            />
-                        )}
-                        onClick={(itemData) => onAdd(itemData.id)}
+        <>
+            <div className={`relative ${className}`}>
+                <FilterList
+                    filterIds={filterIds}
+                    onCross={onCross}
+                    className={`flex items-center gap-1 ${wrap ? "flex-wrap" : "w-fit"}`}
+                    filtersClassName={filtersClassName}
+                >
+                    <input
+                        name="searchFilterField"
+                        type="text"
+                        placeholder="Filters..."
+                        className="pl-1 focus:outline-none"
+                        ref={searchFilterFieldRef}
+                        value={searchFilterFieldValue}
+                        onBlur={() => setShowDropDown(false)}
+                        onChange={(e) => {
+                            handleFieldValueChange(e);
+                            setShowDropDown(true);
+                            searchFilterFieldRef.current.style.width =
+                                10 + searchFilterFieldRef.current.value.length + "ch";
+                        }}
+                        onKeyDown={handleKeyDown}
                     />
-                </div>
+                </FilterList>
             </div>
-        </FilterList>
+
+            <FilterSelectionDropdown
+                showDropDown={showDropDown}
+                searchFilterFieldRef={searchFilterFieldRef}
+                unaddedSearchedFilters={unaddedSearchedFilters}
+                onAdd={onAdd}
+            />
+        </>
     );
 };
 
@@ -97,7 +104,51 @@ FilterListEditor.propTypes = {
     onCross: PropTypes.func,
     wrap: PropTypes.bool,
     onAdd: PropTypes.func.isRequired,
+    className: PropTypes.string,
     filtersClassName: PropTypes.string,
+};
+
+const FilterSelectionDropdown = ({
+    showDropDown,
+    searchFilterFieldRef,
+    unaddedSearchedFilters,
+    onAdd,
+}) => {
+    if (!searchFilterFieldRef.current) {
+        return <></>;
+    }
+    const { top, left, height } = searchFilterFieldRef.current.getBoundingClientRect();
+
+    return (
+        <div
+            className={"fixed w-44 " + (showDropDown ? "block" : "hidden") + " z-50 hover:block"}
+            style={{
+                top: top + height,
+                left: left,
+            }}
+        >
+            <SelectMenu
+                itemsData={unaddedSearchedFilters}
+                renderItem={(itemData) => (
+                    <Filter
+                        filterId={itemData.id}
+                        className="absolute left-1/2 max-w-[90%] -translate-x-1/2 align-top"
+                    />
+                )}
+                onClick={(itemData) => onAdd(itemData.id)}
+            />
+        </div>
+    );
+};
+
+FilterSelectionDropdown.propTypes = {
+    showDropDown: PropTypes.bool.isRequired,
+    searchFilterFieldRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]),
+    unaddedSearchedFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onAdd: PropTypes.func.isRequired,
 };
 
 export default FilterListEditor;

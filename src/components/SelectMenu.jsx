@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const SelectMenu = ({ itemsData, renderItem, onClick }) => {
     return (
-        <ul className="max-h-[10rem] w-full overflow-y-scroll border border-gray-400">
+        <ul className="max-h-[10rem] w-full overflow-y-scroll shadow-lg">
             {itemsData.map((itemData) => (
                 <li
                     key={itemData.id}
