@@ -1,26 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import FilterListEditor from "../filters/FilterListEditor";
 import { addSearchFilter, applySearchQuery, removeSearchFilter } from "./searchSlice";
-import { FiSearch } from "react-icons/fi";
-import { useState } from "react";
 
 const SearchBar = () => {
     const searchFilterIds = useSelector((state) => state.search.searchFilterIds);
     const searchQuery = useSelector((state) => state.search.searchQuery);
     const dispatch = useDispatch();
 
-    const [searchTextFieldValue, setSearchTextFieldValue] = useState(searchQuery);
-
     const handleSearchTextValueChange = (e) => {
-        setSearchTextFieldValue(e.target.value);
-    };
-
-    const handleApplySearchQuery = () => {
-        dispatch(applySearchQuery(searchTextFieldValue));
+        dispatch(applySearchQuery(e.target.value));
     };
 
     return (
-        <div className="flex h-12 w-full items-center rounded-xl border-4 border-black bg-white pl-1">
+        <div className="flex h-12 w-full items-center rounded-xl border-4 border-r-2 border-black bg-white pl-1">
             <FilterListEditor
                 filterIds={searchFilterIds}
                 onCross={(filterId) => dispatch(removeSearchFilter(filterId))}
@@ -33,22 +25,10 @@ const SearchBar = () => {
                 name="searchTextField"
                 type="text"
                 placeholder="Description..."
-                className="h-12 w-[30%] border-4 border-black px-1 focus:outline-none"
-                value={searchTextFieldValue}
-                onBlur={() => setSearchTextFieldValue(searchQuery)}
+                className="h-12 w-[35%] rounded-e-xl border-4 border-r-2 border-black px-1 focus:outline-none"
+                value={searchQuery}
                 onChange={handleSearchTextValueChange}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        handleApplySearchQuery();
-                    }
-                }}
             />
-            <button
-                onClick={handleApplySearchQuery}
-                className="relative h-full w-[5%] bg-black text-white hover:bg-slate-600"
-            >
-                <FiSearch className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
-            </button>
         </div>
     );
 };
