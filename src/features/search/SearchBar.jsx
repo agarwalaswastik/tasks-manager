@@ -18,14 +18,14 @@ const SearchBar = () => {
                 onCross={(filterId) => dispatch(removeSearchFilter(filterId))}
                 wrap={false}
                 onAdd={(filterId) => dispatch(addSearchFilter(filterId))}
-                className="flex h-12 w-[65%] items-center overflow-x-auto"
+                className="flex h-12 w-[60%] items-center overflow-x-auto"
             />
 
             <input
                 name="searchTextField"
                 type="text"
-                placeholder="Description..."
-                className="h-12 w-[35%] rounded-e-xl border-4 border-r-2 border-black px-1 focus:outline-none"
+                placeholder="Search..."
+                className="h-12 w-[40%] rounded-e-xl border-4 border-r-2 border-black px-1 focus:outline-none"
                 value={searchQuery}
                 onChange={handleSearchTextValueChange}
             />

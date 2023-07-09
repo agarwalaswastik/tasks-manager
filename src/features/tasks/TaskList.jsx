@@ -37,7 +37,7 @@ const TaskList = ({ taskList, index }) => {
         <Draggable draggableId={`${taskList.id}-drag`} index={index}>
             {(provided) => (
                 <section
-                    className="mx-2 flex h-full w-80 flex-col rounded-2xl border-8"
+                    className="mx-2 flex h-full w-72 flex-col rounded-2xl border-8"
                     {...provided.draggableProps}
                     ref={provided.innerRef}
                     style={{
@@ -61,7 +61,7 @@ const TaskList = ({ taskList, index }) => {
                         />
                         <CrossButton size={40} onClick={handleDeleteTaskList} />
                     </div>
-                    <div className="w-fill relative h-16">
+                    <div className="w-fill relative h-20">
                         <CrossButton
                             plus={true}
                             color="#00cc00"
