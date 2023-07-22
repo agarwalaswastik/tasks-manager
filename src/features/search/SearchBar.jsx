@@ -19,6 +19,7 @@ const SearchBar = () => {
                 wrap={false}
                 onAdd={(filterId) => dispatch(addSearchFilter(filterId))}
                 className="flex h-12 w-[60%] items-center overflow-x-auto"
+                filtersClassName="align-top"
             />
 
             <input

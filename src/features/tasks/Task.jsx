@@ -61,7 +61,7 @@ const Task = ({ task, index }) => {
                             wrap={true}
                             onAdd={handleAddFilter}
                             onCross={handleCrossFilter}
-                            filtersClassName="max-w-[5rem]"
+                            filtersClassName="max-w-[10rem]"
                         />
                     </div>
                 </article>
